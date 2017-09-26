@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const spreadsheet_1 = require("./spreadsheet");
 const creds = require("./SlackBot-6ef626291af0.json");
 const googleSpreadsheet = require("google-spreadsheet");
+const moment = require("moment");
 const doc = new googleSpreadsheet("***REMOVED***");
 // Check if today's date is the 30th / 31th. then run app.
 // const now = moment().format();
@@ -22,9 +23,10 @@ const doc = new googleSpreadsheet("***REMOVED***");
 // if date is 2:nd. check previous month.
 // if month is january, check december and previous year.
 // if ( day === 2 ) {
-//   console.log( 'its the 2' );
+//   console.log( "its the 2" );
 // }
 // if (day === daysInMonth) {
+const thisDate = moment().date();
 doc.useServiceAccountAuth(creds, (err) => {
     doc.getInfo((error, info) => {
         for (const worksheet of info.worksheets) {
@@ -37,14 +39,31 @@ doc.useServiceAccountAuth(creds, (err) => {
                 const callFuncs = () => __awaiter(this, void 0, void 0, function* () {
                     try {
                         const datesArr = yield spreadsheet.getRowColOfDates();
-                        const monthCols = spreadsheet.getThisMonthSpan(datesArr);
-                        const datesWithoutWeekend = spreadsheet.getWeekdays(datesArr);
-                        // await spreadsheet.checkHolidays(workingDates, mon);
+                        let monthColNumbers = [];
+                        if (thisDate === 2) {
+                            monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, true);
+                        }
+                        else {
+                            monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, false);
+                        }
+                        let datesWithoutWeekend = [];
+                        if (thisDate === 2) {
+                            datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, true);
+                        }
+                        else {
+                            datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, false);
+                        }
                         const holidaysArr = yield spreadsheet.checkHolidays();
-                        const workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr);
+                        let workingDates = [];
+                        if (thisDate === 2) {
+                            workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, true);
+                        }
+                        else {
+                            workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, false);
+                        }
                         const reportedTimeObj = yield spreadsheet.findRowOfReportedTime();
                         const rowNumberOfReportedCells = spreadsheet.getRowNumberOfReportedTime(reportedTimeObj);
-                        const hourCells = yield spreadsheet.getTimeReported(rowNumberOfReportedCells, monthCols);
+                        const hourCells = yield spreadsheet.getTimeReported(rowNumberOfReportedCells, monthColNumbers);
                         spreadsheet.checkTimeFilled(workingDates, hourCells);
                     }
                     catch (err) {

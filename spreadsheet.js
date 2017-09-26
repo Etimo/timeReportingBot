@@ -6,8 +6,8 @@ class Spreadsheet {
     constructor(sheet, name, doc) {
         this.sheet = sheet;
         this.name = name;
-        this.thisYear = moment().year(); // *
-        this.thisMonth = moment().month(); // *
+        this.thisYear = moment().year();
+        this.thisMonth = moment().month();
         this.doc = doc;
     }
     // public gettingCells(maxR, minR, maxC, minC) {
@@ -26,7 +26,7 @@ class Spreadsheet {
     //     });
     //   });
     // }
-    // Getting row 5, col DK and >
+    // Getting row 5, col DK and > for all the DATES in the sheet
     getRowColOfDates() {
         return new Promise((resolve, reject) => {
             this.sheet.getCells({
@@ -42,30 +42,65 @@ class Spreadsheet {
             });
         });
     }
-    getWeekdays(arr) {
+    getWeekdays(arr, second) {
         const monthDatesWithoutWeekend = [];
         for (const item of arr) {
             const dates = item.value;
             const day = moment(dates, "MM-DD-YYYY").day();
             const year = moment(dates, "MM-DD-YYYY").year();
             const month = moment(dates, "MM-DD-YYYY").month();
-            if (this.thisYear === year
-                && (this.thisMonth) === month
-                && day !== 6 && day !== 0) {
-                monthDatesWithoutWeekend.push(item);
+            // Check for prev months
+            if (second) {
+                if (this.thisMonth === 0) {
+                    if ((this.thisYear - 1) === year
+                        && 11 === month
+                        && day !== 6 && day !== 0) {
+                        monthDatesWithoutWeekend.push(item);
+                    }
+                }
+                else {
+                    if (this.thisYear === year
+                        && (this.thisMonth - 1) === month
+                        && day !== 6 && day !== 0) {
+                        monthDatesWithoutWeekend.push(item);
+                    }
+                }
+            }
+            else {
+                if (this.thisYear === year
+                    && (this.thisMonth) === month
+                    && day !== 6 && day !== 0) {
+                    monthDatesWithoutWeekend.push(item);
+                }
             }
         }
         return monthDatesWithoutWeekend;
     }
-    getThisMonthSpan(arr) {
+    getSpecificMonthSpan(arr, second) {
         const monthCols = [];
         // Getting right columns of month and year span
         for (const item of arr) {
             const dates = item.value;
             const year = moment(dates, "MM-DD-YYYY").year();
             const month = moment(dates, "MM-DD-YYYY").month();
-            if ((this.thisMonth) === month && this.thisYear === year) {
-                monthCols.push(item.col);
+            // If it's the 2, check for previous month
+            if (second) {
+                // If it's January, check for december last year.
+                if (this.thisMonth === 0) {
+                    if (11 === month && (this.thisYear - 1) === year) {
+                        monthCols.push(item.col);
+                    }
+                }
+                else {
+                    if ((this.thisMonth - 1) === month && this.thisYear === year) {
+                        monthCols.push(item.col);
+                    }
+                }
+            }
+            else {
+                if ((this.thisMonth) === month && this.thisYear === year) {
+                    monthCols.push(item.col);
+                }
             }
         }
         return monthCols;
@@ -91,14 +126,28 @@ class Spreadsheet {
             });
         });
     }
-    workingDates(datesWithoutWeekend, holidaysArr) {
+    workingDates(datesWithoutWeekend, holidaysArr, second) {
         const arrDatesOfVacation = [];
         for (const item of holidaysArr) {
             const dates = item.value;
             const months = moment(dates).month();
             const years = moment(dates).year();
-            if (this.thisYear === years && this.thisMonth === months) {
-                arrDatesOfVacation.push(dates);
+            if (second) {
+                if (this.thisMonth === 0) {
+                    if ((this.thisYear - 1) === years && 11 === months) {
+                        arrDatesOfVacation.push(dates);
+                    }
+                }
+                else {
+                    if (this.thisYear === years && (this.thisMonth - 1) === months) {
+                        arrDatesOfVacation.push(dates);
+                    }
+                }
+            }
+            else {
+                if (this.thisYear === years && this.thisMonth === months) {
+                    arrDatesOfVacation.push(dates);
+                }
             }
         }
         for (const item of datesWithoutWeekend) {
@@ -160,18 +209,17 @@ class Spreadsheet {
             });
         }
         else {
-            return "You are probably new";
+            return ", du behöver inte fylla i tidsrapporten än!";
         }
     }
     checkTimeFilled(workingDates, arrHourCells) {
-        console.log(arrHourCells);
         if (typeof arrHourCells === "string") {
             const newStaffMessage = new sendMessage_1.default(this.name, arrHourCells);
             newStaffMessage.sendMessage();
         }
         else {
             let isFilled = true;
-            const message = ", glöm ej att fylla i tidsrapporten!";
+            const message = ", glöm ej att fylla i tidsrapporten! :scream:";
             const message2 = ", du har fyllt i tidsrapporten! YIHOOO! :sunglasses:";
             for (const item2 of workingDates) {
                 for (const item of arrHourCells) {

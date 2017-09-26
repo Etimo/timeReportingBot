@@ -9,17 +9,14 @@ const doc: any = new googleSpreadsheet("***REMOVED***");
 
 // Check if today's date is the 30th / 31th. then run app.
 // const now = moment().format();
-const day = moment().date();
+// const day = moment().date();
 // console.log(now);
 // console.log(day);
 // const daysInMonth = moment(now).daysInMonth();
 
-// Check date?
-// if date is 2:nd. check previous month.
-// if month is january, check december and previous year.
-
-
 // if (day === daysInMonth) {
+
+const thisDate: number = moment().date();
 
 doc.useServiceAccountAuth(creds, (err) => {
 
@@ -37,14 +34,33 @@ doc.useServiceAccountAuth(creds, (err) => {
 
           try {
             const datesArr: any = await spreadsheet.getRowColOfDates();
-            const monthCols: number[] = spreadsheet.getThisMonthSpan(datesArr);
-            const datesWithoutWeekend: any[] = spreadsheet.getWeekdays(datesArr);
-            // await spreadsheet.checkHolidays(workingDates, mon);
+
+            let monthColNumbers: number[] = [];
+            if (thisDate === 2) {
+              monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, true);
+            }else {
+              monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, false);
+            }
+
+            let datesWithoutWeekend: any[] = [];
+            if (thisDate === 2) {
+              datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, true);
+            }else {
+              datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, false);
+            }
+
             const holidaysArr: any = await spreadsheet.checkHolidays();
-            const workingDates: number[] = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr);
+
+            let workingDates: number[] = [];
+            if (thisDate === 2) {
+              workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, true);
+            }else {
+              workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, false);
+            }
+
             const reportedTimeObj: any = await spreadsheet.findRowOfReportedTime();
             const rowNumberOfReportedCells: number = spreadsheet.getRowNumberOfReportedTime(reportedTimeObj);
-            const hourCells: any = await spreadsheet.getTimeReported(rowNumberOfReportedCells, monthCols);
+            const hourCells: any = await spreadsheet.getTimeReported(rowNumberOfReportedCells, monthColNumbers);
             spreadsheet.checkTimeFilled(workingDates, hourCells);
           }catch (err) {
             console.log(err);

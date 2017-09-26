@@ -7,13 +7,15 @@ export default class Spreadsheet {
   private name: string;
   private thisYear: number;
   private thisMonth: number;
+  private thisDate: number;
   private doc;
 
   constructor(sheet, name, doc) {
     this.sheet = sheet;
     this.name = name;
-    this.thisYear = moment().year(); // *
-    this.thisMonth = moment().month(); // *
+    this.thisYear = moment().year();
+    this.thisMonth = moment().month();
+
     this.doc = doc;
   }
 
@@ -53,7 +55,7 @@ export default class Spreadsheet {
 
   }
 
-  public getWeekdays(arr) {
+  public getWeekdays(arr, second) {
     const monthDatesWithoutWeekend: any[] = [];
     for (const item of arr) {
       const dates = item.value;
@@ -61,17 +63,34 @@ export default class Spreadsheet {
       const year: number = moment(dates, "MM-DD-YYYY").year();
       const month: number = moment(dates, "MM-DD-YYYY").month();
 
-      if (this.thisYear === year
-      && (this.thisMonth) === month
-      && day !== 6 && day !== 0) {
-        monthDatesWithoutWeekend.push(item);
-      }
+      // Check for prev months
+      if (second) {
+        if (this.thisMonth === 0) {
+          if ((this.thisYear - 1) === year
+          && 11 === month
+          && day !== 6 && day !== 0) {
+            monthDatesWithoutWeekend.push(item);
+          }
+        }else {
+          if (this.thisYear === year
+          && (this.thisMonth - 1) === month
+          && day !== 6 && day !== 0) {
+            monthDatesWithoutWeekend.push(item);
+          }
+        }
+      }else {
+        if (this.thisYear === year
+        && (this.thisMonth) === month
+        && day !== 6 && day !== 0) {
 
+          monthDatesWithoutWeekend.push(item);
+        }
+      }
     }
     return monthDatesWithoutWeekend;
   }
 
-  public getThisMonthSpan(arr) {
+  public getSpecificMonthSpan(arr, second) {
     const monthCols: number[] = [];
 // Getting right columns of month and year span
     for (const item of arr) {
@@ -79,8 +98,23 @@ export default class Spreadsheet {
       const year: number = moment(dates, "MM-DD-YYYY").year();
       const month: number = moment(dates, "MM-DD-YYYY").month();
 
-      if ((this.thisMonth) === month && this.thisYear === year) {
-        monthCols.push(item.col);
+      // If it's the 2, check for previous month
+      if (second) {
+        // If it's January, check for december last year.
+        if (this.thisMonth === 0) {
+          if (11 === month && (this.thisYear - 1) === year) {
+            monthCols.push(item.col);
+          }
+        }else {
+          if ((this.thisMonth - 1) === month && this.thisYear === year) {
+            monthCols.push(item.col);
+          }
+        }
+      }else {
+        if ((this.thisMonth) === month && this.thisYear === year) {
+
+          monthCols.push(item.col);
+        }
       }
     }
     return monthCols;
@@ -108,7 +142,7 @@ export default class Spreadsheet {
     });
   }
 
-  public workingDates(datesWithoutWeekend, holidaysArr) {
+  public workingDates(datesWithoutWeekend, holidaysArr, second) {
 
     const arrDatesOfVacation: number[] = [];
 
@@ -116,9 +150,23 @@ export default class Spreadsheet {
       const dates = item.value;
       const months: number = moment(dates).month();
       const years: number = moment(dates).year();
-      if (this.thisYear === years && this.thisMonth === months) {
-        arrDatesOfVacation.push(dates);
+
+      if (second) {
+        if (this.thisMonth === 0) {
+          if ((this.thisYear - 1) === years && 11 === months) {
+            arrDatesOfVacation.push(dates);
+          }
+        }else {
+          if (this.thisYear === years && (this.thisMonth - 1) === months) {
+            arrDatesOfVacation.push(dates);
+          }
+        }
+      }else {
+        if (this.thisYear === years && this.thisMonth === months) {
+          arrDatesOfVacation.push(dates);
+        }
       }
+
     }
 
     for (const item of datesWithoutWeekend) {
@@ -190,12 +238,12 @@ export default class Spreadsheet {
   }
 
   public checkTimeFilled(workingDates, arrHourCells) {
-    if ( typeof arrHourCells === "string" ){
+    if ( typeof arrHourCells === "string" ) {
       const newStaffMessage = new SlackMessage(this.name, arrHourCells);
       newStaffMessage.sendMessage();
     }else{
       let isFilled: boolean = true;
-      const message = ", glöm ej att fylla i tidsrapporten!";
+      const message = ", glöm ej att fylla i tidsrapporten! :scream:";
       const message2 = ", du har fyllt i tidsrapporten! YIHOOO! :sunglasses:";
 
       for (const item2 of workingDates) {
