@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const request = require("request"); // new way to get modules from node modules. npm install --save-dev @types/request
+const uri_1 = require("./creds/uri");
 class SlackMessage {
     constructor(name, message) {
         this.options = {
@@ -13,7 +14,7 @@ class SlackMessage {
                 username: "BOten",
             },
             method: "POST",
-            uri: "***REMOVED***",
+            uri: uri_1.slackUri,
         };
     }
     sendMessage() {

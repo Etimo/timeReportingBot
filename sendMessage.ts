@@ -1,4 +1,5 @@
 import * as request from "request"; // new way to get modules from node modules. npm install --save-dev @types/request
+import {slackUri} from "./creds/uri";
 
 export default class SlackMessage {
   private options;
@@ -14,7 +15,7 @@ export default class SlackMessage {
         username: "BOten",
       },
       method: "POST",
-      uri: "***REMOVED***",
+      uri: slackUri,
     };
 
   }

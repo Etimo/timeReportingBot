@@ -11,22 +11,6 @@ class Spreadsheet {
         this.thisMonth = moment().month();
         this.doc = doc;
     }
-    // public gettingCells(maxR, minR, maxC, minC) {
-    //   return new Promise((resolve, reject) => {
-    //     this.sheet.getCells({
-    //       "max-col": maxC,
-    //       "max-row": maxR, // 5
-    //       "min-col": minC, // 6
-    //       "min-row": minR, // 5
-    //       "return-empty": false,
-    //     }, (err, arr) => {
-    //       if (err) {
-    //         return reject(err);
-    //       }
-    //       return resolve(arr);
-    //     });
-    //   });
-    // }
     // Getting row 5, col DK and > for all the DATES in the sheet
     getRowColOfDates() {
         return new Promise((resolve, reject) => {

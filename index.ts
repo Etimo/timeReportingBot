@@ -1,6 +1,6 @@
 import Spreadsheet from "./spreadsheet";
 
-import * as creds from "./SlackBot-6ef626291af0.json";
+import * as creds from "./creds/SlackBot-6ef626291af0.json";
 
 import * as googleSpreadsheet from "google-spreadsheet";
 import * as moment from "moment";
