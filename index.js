@@ -13,19 +13,6 @@ const creds = require("./SlackBot-6ef626291af0.json");
 const googleSpreadsheet = require("google-spreadsheet");
 const moment = require("moment");
 const doc = new googleSpreadsheet("***REMOVED***");
-// Check if today's date is the 30th / 31th. then run app.
-// const now = moment().format();
-// const day = moment().date();
-// console.log(now);
-// console.log(day);
-// const daysInMonth = moment(now).daysInMonth();
-// Check date?
-// if date is 2:nd. check previous month.
-// if month is january, check december and previous year.
-// if ( day === 2 ) {
-//   console.log( "its the 2" );
-// }
-// if (day === daysInMonth) {
 const thisDate = moment().date();
 doc.useServiceAccountAuth(creds, (err) => {
     doc.getInfo((error, info) => {
@@ -40,25 +27,17 @@ doc.useServiceAccountAuth(creds, (err) => {
                     try {
                         const datesArr = yield spreadsheet.getRowColOfDates();
                         let monthColNumbers = [];
+                        let datesWithoutWeekend = [];
+                        let workingDates = [];
+                        const holidaysArr = yield spreadsheet.checkHolidays();
                         if (thisDate === 2) {
                             monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, true);
-                        }
-                        else {
-                            monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, false);
-                        }
-                        let datesWithoutWeekend = [];
-                        if (thisDate === 2) {
                             datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, true);
-                        }
-                        else {
-                            datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, false);
-                        }
-                        const holidaysArr = yield spreadsheet.checkHolidays();
-                        let workingDates = [];
-                        if (thisDate === 2) {
                             workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, true);
                         }
                         else {
+                            monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, false);
+                            datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, false);
                             workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, false);
                         }
                         const reportedTimeObj = yield spreadsheet.findRowOfReportedTime();
