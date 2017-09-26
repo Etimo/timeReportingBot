@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const sendMessage_1 = require("./sendMessage");
+const slugs_1 = require("./slugs");
 const moment = require("moment");
 class Spreadsheet {
     constructor(sheet, name, doc) {
@@ -209,18 +210,15 @@ class Spreadsheet {
             });
         }
         else {
-            return ", du behöver inte fylla i tidsrapporten än!";
+            return undefined;
+            // return "du behöver inte fylla i tidsrapporten än!";
         }
     }
     checkTimeFilled(workingDates, arrHourCells) {
-        if (typeof arrHourCells === "string") {
-            const newStaffMessage = new sendMessage_1.default(this.name, arrHourCells);
-            newStaffMessage.sendMessage();
-        }
-        else {
+        if (typeof arrHourCells !== "undefined") {
             let isFilled = true;
-            const message = ", glöm ej att fylla i tidsrapporten! :scream:";
-            const message2 = ", du har fyllt i tidsrapporten! YIHOOO! :sunglasses:";
+            const message = "glöm ej att fylla i tidsrapporten! :scream:";
+            // const message2 = "du har fyllt i tidsrapporten! YIHOOO! :sunglasses:";
             for (const item2 of workingDates) {
                 for (const item of arrHourCells) {
                     if (item2.col === item.col) {
@@ -231,13 +229,10 @@ class Spreadsheet {
                     }
                 }
             }
+            const name = slugs_1.Names[this.name] ? `<@${slugs_1.Names[this.name]}>` : this.name;
             if (!isFilled) {
-                const unfilledMessage = new sendMessage_1.default(this.name, message);
+                const unfilledMessage = new sendMessage_1.default(name, message);
                 unfilledMessage.sendMessage();
-            }
-            else {
-                const filledMessage = new sendMessage_1.default(this.name, message2);
-                filledMessage.sendMessage();
             }
         }
     }

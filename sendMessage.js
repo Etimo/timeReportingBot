@@ -9,7 +9,7 @@ class SlackMessage {
             },
             json: {
                 icon_emoji: ":suspect:",
-                text: name + message,
+                text: `${name} ${message}`,
                 username: "BOten",
             },
             method: "POST",

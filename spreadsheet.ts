@@ -1,4 +1,5 @@
 import SlackMessage from "./sendMessage";
+import {Names} from "./slugs";
 
 import * as moment from "moment";
 
@@ -233,18 +234,16 @@ export default class Spreadsheet {
         });
       });
     }else {
-      return ", du behöver inte fylla i tidsrapporten än!";
+      return undefined;
+      // return "du behöver inte fylla i tidsrapporten än!";
     }
   }
 
   public checkTimeFilled(workingDates, arrHourCells) {
-    if ( typeof arrHourCells === "string" ) {
-      const newStaffMessage = new SlackMessage(this.name, arrHourCells);
-      newStaffMessage.sendMessage();
-    }else{
+    if ( typeof arrHourCells !== "undefined" ) {
       let isFilled: boolean = true;
-      const message = ", glöm ej att fylla i tidsrapporten! :scream:";
-      const message2 = ", du har fyllt i tidsrapporten! YIHOOO! :sunglasses:";
+      const message = "glöm ej att fylla i tidsrapporten! :scream:";
+      // const message2 = "du har fyllt i tidsrapporten! YIHOOO! :sunglasses:";
 
       for (const item2 of workingDates) {
         for (const item of arrHourCells){
@@ -258,14 +257,12 @@ export default class Spreadsheet {
         }
       }
 
-      if (!isFilled) {
-        const unfilledMessage = new SlackMessage(this.name, message);
-        unfilledMessage.sendMessage();
-      }else {
-        const filledMessage = new SlackMessage(this.name, message2);
-        filledMessage.sendMessage();
-      }
+      const name = Names[this.name] ? `<@${Names[this.name]}>` : this.name;
 
+      if (!isFilled) {
+        const unfilledMessage = new SlackMessage( name, message);
+        unfilledMessage.sendMessage();
+      }
     }
 
   }
