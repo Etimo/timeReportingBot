@@ -1,1 +1,1 @@
-{"version":3,"file":"slugs.js","sourceRoot":"","sources":["slugs.ts"],"names":[],"mappings":";;AAAa,QAAA,KAAK,GAAG;IACnB,sCAAsC;IACtC,4BAA4B;IAC5B,4BAA4B;IAC5B,0CAA0C;IAC1C,+BAA+B;IAC/B,qCAAqC;IACrC,SAAS,EAAE,MAAM;CAElB,CAAC"}
+{"version":3,"file":"slugs.js","sourceRoot":"","sources":["slugs.ts"],"names":[],"mappings":";;AAAa,QAAA,KAAK,GAAG;IACnB,gBAAgB,EAAE,gBAAgB;IAClC,cAAc,EAAE,QAAQ;IACxB,WAAW,EAAE,WAAW;IACxB,mBAAmB,EAAE,iBAAiB;IACtC,eAAe,EAAE,UAAU;IAC3B,gBAAgB,EAAE,eAAe;IACjC,SAAS,EAAE,MAAM;IACjB,gBAAgB,EAAE,eAAe;CAClC,CAAC"}
