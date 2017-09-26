@@ -7,5 +7,4 @@ export const Names = {
   "Johan Hazelius": "johanhazelius",
   "Nina Ma": "nina",
   "Oscar Nylander": "oscarnylander",
-  "Test Nina bot": "namomomo",
 };
