@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const spreadsheet_1 = require("./spreadsheet");
-const creds = require("./creds/SlackBot-6ef626291af0.json");
+const creds = require("./creds/SlackBot-0bd3a3481e0e.json");
 const googleSpreadsheet = require("google-spreadsheet");
 const googleSpreadsheetKey_1 = require("./creds/googleSpreadsheetKey");
 const moment = require("moment");

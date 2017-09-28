@@ -1,6 +1,6 @@
 import Spreadsheet from "./spreadsheet";
 
-import * as creds from "./creds/SlackBot-6ef626291af0.json";
+import * as creds from "./creds/SlackBot-0bd3a3481e0e.json";
 
 import * as googleSpreadsheet from "google-spreadsheet";
 import {googleSpreadsheetKey} from "./creds/googleSpreadsheetKey";
