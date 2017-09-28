@@ -11,8 +11,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const spreadsheet_1 = require("./spreadsheet");
 const creds = require("./creds/SlackBot-6ef626291af0.json");
 const googleSpreadsheet = require("google-spreadsheet");
+const googleSpreadsheetKey_1 = require("./creds/googleSpreadsheetKey");
 const moment = require("moment");
-const doc = new googleSpreadsheet("***REMOVED***");
+const doc = new googleSpreadsheet(googleSpreadsheetKey_1.googleSpreadsheetKey);
 const thisDate = moment().date();
 doc.useServiceAccountAuth(creds, (err) => {
     doc.getInfo((error, info) => {
