@@ -3,9 +3,11 @@ import Spreadsheet from "./spreadsheet";
 import * as creds from "./creds/SlackBot-6ef626291af0.json";
 
 import * as googleSpreadsheet from "google-spreadsheet";
+import {googleSpreadsheetKey} from "./creds/googleSpreadsheetKey";
+
 import * as moment from "moment";
 
-const doc: any = new googleSpreadsheet("***REMOVED***");
+const doc: any = new googleSpreadsheet(googleSpreadsheetKey);
 
 const thisDate: number = moment().date();
 
