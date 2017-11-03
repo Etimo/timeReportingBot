@@ -11,7 +11,7 @@ class SlackMessage {
             json: {
                 icon_emoji: ":suspect:",
                 text: `${name} ${message}`,
-                username: "The time BOT",
+                display_name: "The time BOT",
             },
             method: "POST",
             uri: uri_1.slackUri,
