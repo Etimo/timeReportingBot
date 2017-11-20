@@ -1,5 +1,5 @@
 import * as request from "request";
-import {slackUri} from "./creds/uri";
+import slackUri from "./creds/uri";
 
 export default class SlackMessage {
   private options;
@@ -10,9 +10,9 @@ export default class SlackMessage {
         "content-type": "application/json",
       },
       json: {
+        display_name: "The time BOT",
         icon_emoji: ":suspect:",
         text: `${name} ${message}`,
-        display_name: "The time BOT",
       },
       method: "POST",
       uri: slackUri,
@@ -24,7 +24,7 @@ export default class SlackMessage {
     request(this.options, (error, response, body) => {
       if (!error && response.statusCode === 200) {
       // console.log(body.id) // Print the shortened url.
-      }else {
+      } else {
        return error;
       }
     });

@@ -22,7 +22,7 @@ function main() {
     if (shouldRunAtMoment(momentNow) === false) {
         return;
     }
-    const doc = new googleSpreadsheet(googleSpreadsheetKey_1.googleSpreadsheetKey);
+    const doc = new googleSpreadsheet(googleSpreadsheetKey_1.default);
     const thisDate = moment().date();
     const lastDayInMonth = moment().daysInMonth();
     doc.useServiceAccountAuth(creds, (err) => {
