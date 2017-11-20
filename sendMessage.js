@@ -9,12 +9,12 @@ class SlackMessage {
                 "content-type": "application/json",
             },
             json: {
+                display_name: "The time BOT",
                 icon_emoji: ":suspect:",
                 text: `${name} ${message}`,
-                display_name: "The time BOT",
             },
             method: "POST",
-            uri: uri_1.slackUri,
+            uri: uri_1.default,
         };
     }
     sendMessage() {

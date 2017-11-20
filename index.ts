@@ -4,10 +4,9 @@ import Spreadsheet from "./spreadsheet";
 import * as creds from "./creds/SlackBot-0bd3a3481e0e.json";
 
 import * as googleSpreadsheet from "google-spreadsheet";
-import {googleSpreadsheetKey} from "./creds/googleSpreadsheetKey";
+import googleSpreadsheetKey from "./creds/googleSpreadsheetKey";
 
 import * as moment from "moment";
-
 const job = new CronJob("0 0 9 * * *", () => {
   main();
 });
@@ -49,7 +48,7 @@ function main() {
                 monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, true);
                 datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, true);
                 workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, true);
-              }else {
+              } else {
                 monthColNumbers = spreadsheet.getSpecificMonthSpan(datesArr, false);
                 datesWithoutWeekend = spreadsheet.getWeekdays(datesArr, false);
                 workingDates = spreadsheet.workingDates(datesWithoutWeekend, holidaysArr, false);
@@ -59,7 +58,7 @@ function main() {
               const rowNumberOfReportedCells: number = spreadsheet.getRowNumberOfReportedTime(reportedTimeObj);
               const hourCells: any = await spreadsheet.getTimeReported(rowNumberOfReportedCells, monthColNumbers);
               spreadsheet.checkTimeFilled(workingDates, hourCells);
-            }catch (err) {
+            } catch (err) {
               console.log(err);
           }
         };
