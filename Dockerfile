@@ -1,13 +1,11 @@
-FROM node:9.0-alpine
+FROM node:9.2-alpine
 
 WORKDIR /app
 
 COPY package.json .
-
-RUN yarn install
+RUN npm install
 
 COPY . .
+RUN npm run build
 
-RUN yarn run compile
-
-ENTRYPOINT ["node"]
+ENTRYPOINT ["node", "index.js"]

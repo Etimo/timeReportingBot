@@ -1,25 +1,24 @@
 {
-  "name": "typescriptt",
+  "name": "timeReportingBot",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cron": "^1.3.0",
     "google-spreadsheet": "^2.0.4",
-    "moment": "^2.18.1",
-    "request": "^2.81.0",
-    "typings": "^2.1.1"
+    "moment": "^2.19.2",
+    "request": "^2.83.0"
   },
   "devDependencies": {
-    "@types/node": "^7.0.29",
-    "@types/request": "0.0.43",
-    "tslint": "^5.4.3",
-    "typescript": "^2.3.4"
+    "@types/node": "^8.0.53",
+    "@types/request": "^2.0.8",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
   },
-  "description": ""
+  "description": "Sends slack messages to Etimo employees that have not reported time worked at the end of the month."
 }
