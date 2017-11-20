@@ -105,6 +105,7 @@ function getLastBusinessDayOfMonth(momentArg) {
   return momentToCheck;
 }
 
+job.start();
 // function x(err, holidaysArr) {
 //   // istället för callback, "wrapper" funktion som använder promise
 //   // om success: promise.resolve
