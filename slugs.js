@@ -8,7 +8,6 @@ exports.Names = {
     "Jens-Peter Olsson": "jenspeterolsson",
     "Joakim Olesen": "joakoles",
     "Johan Hazelius": "johanhazelius",
-    "Nina Ma": "nina",
     "Oscar Nylander": "oscarnylander",
 };
 //# sourceMappingURL=slugs.js.map
